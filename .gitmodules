@@ -1,0 +1,4 @@
+[submodule "Source code"]
+	path = lostops-app
+	url = git@github.com:AegirVOD/lostops-app.git
+	branch = main
