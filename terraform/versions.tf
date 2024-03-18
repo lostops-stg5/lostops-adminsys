@@ -7,10 +7,10 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "" # Not defined yet, because of VM waiting
-    storage_account_name = "lostops_storage_account"
-    container_name       = "tfstate_container"
-    key                  = "prod.terraform.tfstate" # Not defined yet, because of VM waiting
+    resource_group_name  = "t-nsa-800-stg-2"
+    storage_account_name = "atnsa800stg26523"
+    container_name       = "tfstate-container"
+    key                  = "prod.terraform.tfstate"
   }
 
   required_version = "~> 1.7.1"
