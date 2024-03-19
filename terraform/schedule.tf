@@ -3,9 +3,9 @@
 # -----------------------------------------------------------------
 
 resource "azurerm_dev_test_schedule" "auto_start" {
-  name                = "LabAutoStart"
+  name                = "app-schedule-start"
   location            = data.azurerm_resource_group.lostops_ressource_group.location
-  resource_group_name = data.azurerm_resource_group.lostops_ressource_group.name
+  resource_group_name = data.azurerm_resource_group.lostops_ressource_group_items.name
   lab_name            = data.azurerm_dev_test_lab.lostops_lab.name
 
   weekly_recurrence {
@@ -20,15 +20,15 @@ resource "azurerm_dev_test_schedule" "auto_start" {
   }
 
   tags = {
-    "environnement" : "Production"
-    "service" : "lostops-app"
+    "group_number" : "2"
+    "module" : "t-nsa-800"
   }
 }
 
 resource "azurerm_dev_test_schedule" "auto_shutdown" {
-  name                = "LabAutoStart"
+  name                = "app-schedule-shutdown"
   location            = data.azurerm_resource_group.lostops_ressource_group.location
-  resource_group_name = data.azurerm_resource_group.lostops_ressource_group.name
+  resource_group_name = data.azurerm_resource_group.lostops_ressource_group_items.name
   lab_name            = data.azurerm_dev_test_lab.lostops_lab.name
 
   weekly_recurrence {
@@ -43,7 +43,7 @@ resource "azurerm_dev_test_schedule" "auto_shutdown" {
   }
 
   tags = {
-    "environnement" : "Production"
-    "service" : "lostops-app"
+    "group_number" : "2"
+    "module" : "t-nsa-800"
   }
 }
