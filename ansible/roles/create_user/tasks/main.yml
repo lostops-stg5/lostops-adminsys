@@ -5,6 +5,7 @@
       password: $6$gkB.lvVVNAv9D535$Vbqs1kNxc/YTR.ZZbBqqKzRicOF8y.cpGo1Xm2hrwjHCH6G9jJ7dEAwIXanJzfXYB6KFnRnuc2XXFuB2cKwPM0
       state: present
       shell: /bin/bash
+      uid: 1500
       system: no
       createhome: yes
       home: /home/lostops
