@@ -6,6 +6,8 @@
   roles: # roles will be executed in order
     - create_user
     - add_ssh_keys
+    - install_docker
+    - node_exporter
 
 - name: Configure Docker Server
   hosts: docker
@@ -16,6 +18,7 @@
     - create_user
     - add_ssh_keys
     - install_docker
+    - node_exporter
 
 - name: Configure Web Server
   hosts: web
@@ -26,3 +29,4 @@
     - create_user
     - add_ssh_keys
     - install_docker
+    - node_exporter
