@@ -15,6 +15,7 @@
   roles: # roles will be executed in order
     - create_user
     - add_ssh_keys
+    - install_docker
 
 - name: Configure Web Server
   hosts: web
@@ -24,3 +25,4 @@
   roles: # roles will be executed in order
     - create_user
     - add_ssh_keys
+    - install_docker
