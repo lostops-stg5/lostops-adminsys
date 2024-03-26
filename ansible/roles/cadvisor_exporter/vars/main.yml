@@ -1,0 +1,13 @@
+cadvisor_exporter_args:
+  - '--collector=enable'
+  - '--collector=storage_duration=30m'
+  - '--collector=housekeeping_interval=10s'
+  - '--collector=disable_default_metrics'
+  - '--web.listen-address=0.0.0.0:9323'
+  - '--logtostderr=true'
+
+cadvisor_exporter_image: google/cadvisor:v0.32.0
+
+cadvisor_exporter_restart: on-failure
+cadvisor_exporter_restart_sec: 15
+cadvisor_exporter_service_name: cadvisor-exporter

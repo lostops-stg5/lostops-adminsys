@@ -19,6 +19,7 @@
     - add_ssh_keys
     - install_docker
     - node_exporter
+    - cadvisor_exporter
 
 - name: Configure Web Server
   hosts: web
@@ -30,3 +31,4 @@
     - add_ssh_keys
     - install_docker
     - node_exporter
+    - cadvisor_exporter

@@ -1,0 +1,36 @@
+- name: Create cadvisor-exporter container
+  become: true
+  become_user: lostops
+  docker_container:
+    user: root
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ cadvisor_exporter_service_name }}"
+    image: "{{ cadvisor_exporter_image }}"
+    ports:
+      - "8080:8080"
+    state: started
+    restart_policy: always
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run/user/1500:/var/run:rw"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+  notify: restart cadvisor-exporter
+
+- name: Create cadvisor-exporter service file
+  become: true
+  become_user: lostops
+  template:
+    dest: "/home/lostops/.config/systemd/user/{{ cadvisor_exporter_service_name }}.service"
+    src: "roles/cadvisor_exporter/templates/cadvisor-exporter.service.j2"
+    mode: 0664
+  notify: restart cadvisor-exporter
+
+- name: Enable cadvisor-exporter service
+  become: true
+  become_user: lostops
+  service:
+    name: "{{ cadvisor_exporter_service_name }}.service"
+    state: started
+    enabled: yes
+    scope: user
