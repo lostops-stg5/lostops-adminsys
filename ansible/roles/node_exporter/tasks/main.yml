@@ -1,0 +1,37 @@
+- name: Create node-exporter container
+  become: true
+  become_user: lostops
+  docker_container:
+    user: root
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ node_exporter_service_name }}"
+    capabilities:
+      - sys_time
+    command: "{{ node_exporter_args }}"
+    detach: true
+    image: "{{ node_exporter_image }}"
+    ports:
+      - "9100:9100"
+    state: present
+    volumes:
+      - "/:/host:ro,rslave"
+      # - "/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro"
+  notify: restart node-exporter
+
+- name: Create node-exporter service file
+  become: true
+  become_user: lostops
+  template:
+    dest: "/home/lostops/.config/systemd/user/{{ node_exporter_service_name }}.service"
+    src: "roles/node_exporter/templates/node-exporter.service.j2"
+    mode: 0664
+  notify: restart node-exporter
+
+- name: Enable node-exporter service
+  become: true
+  become_user: lostops
+  service:
+    name: "{{ node_exporter_service_name }}.service"
+    state: started
+    enabled: yes
+    scope: user

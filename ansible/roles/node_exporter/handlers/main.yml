@@ -1,0 +1,9 @@
+- name: Restart node-exporter
+  become: true
+  become_user: lostops
+  systemd:
+    name: "{{ node_exporter_service_name }}.service"
+    daemon_reload: yes
+    state: restarted
+    scope: user
+  listen: restart node-exporter
