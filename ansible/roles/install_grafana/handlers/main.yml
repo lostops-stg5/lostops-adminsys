@@ -1,0 +1,6 @@
+# ---
+# - name: Restart Grafana
+#   ansible.builtin.systemd:
+#     name: grafana-server  # Specifies the Grafana service to manage
+#     state: restarted  # Ensures the service is restarted
+#     daemon_reload: yes  # Reloads the systemd daemon to ensure it reads any changes in service configuration files

@@ -1,0 +1,26 @@
+---
+- name: Créer un répertoire pour Prometheus
+  ansible.builtin.file:
+    path: /chemin/sur/vm/prometheus
+    state: directory
+
+- name: Copier le fichier de configuration de Prometheus
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /chemin/sur/vm/prometheus/prometheus.yml
+
+- name: Télécharger et lancer le conteneur Prometheus
+  ansible.builtin.docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - "/chemin/sur/vm/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "prometheus_data:/prometheus"
+    command: '--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.yourdomain.com`)"
