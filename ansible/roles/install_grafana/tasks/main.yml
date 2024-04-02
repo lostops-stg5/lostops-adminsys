@@ -1,6 +1,6 @@
 ---
 - name: Ensure Docker is installed
-  ansible.builtin.package:
+  ansible.builtin.package: # This module is used to install packages on the target system.
     name: docker
     state: present
 
@@ -8,14 +8,20 @@
   community.general.docker_image:
     name: grafana/grafana
     source: pull
+    docker_host: "unix:///run/user/1500/docker.sock" # This is the path to the Docker socket file
+  become: true # run as a superuser
 
 - name: Run Grafana container
-  community.general.docker_container:
+  community.general.docker_container: # This module is used to manage Docker containers.
     name: grafana
-    image: grafana/grafana
-    state: started
-    restart_policy: always
+    image: grafana/grafana # This specifies the image to use for the container.
+    user : root
+    state: started # this ensures that the container is started.
+    restart_policy: always # this ensures that the container restarts automatically if it stops.
     ports:
-      - "3000:3000"
-    volumes:
-      - "/path/to/grafana/data:/var/lib/grafana"
+      - "3000:3000" # This binds port 3000 on the host to port 3000 in the container.
+    volumes: # This volume mounts the Grafana data directory on the host to the container's data directory.
+      - "/home/lostops/grafana/data:/var/lib/grafana" 
+    docker_host: "unix:///run/user/1500/docker.sock"  # This is the path to the Docker socket file
+  become: true # run as a superuser
+  become_user: lostops # Switch to the user "lostops" after becoming a superuser
