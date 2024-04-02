@@ -15,15 +15,7 @@
     mode: '0644'
   become: true  # Run as a superuser
   become_user: lostops  # Switch to the user "lostops" after becoming a superuser
-
 # The above task takes the prometheus.yml.j2 Jinja2 template, fills it with the appropriate variables, and copies it to the target directory, setting the lostops user as the owner.
-
-- name: Pull Prometheus Docker image
-  ansible.builtin.docker_image:
-    name: prom/prometheus:latest
-    source: pull
-  become: true  # Run as a superuser
-# This task pulls the latest Prometheus Docker image from DockerHub.
 
 - name: Run Prometheus Docker container
   ansible.builtin.docker_container:
