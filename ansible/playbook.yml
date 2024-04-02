@@ -20,6 +20,8 @@
     - install_docker
     - node_exporter
     - cadvisor_exporter
+    - install_prometheus
+    - install_grafana
 
 - name: Configure Web Server
   hosts: web

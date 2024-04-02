@@ -1,0 +1,34 @@
+- name: Create a directory for Prometheus configuration and data
+  ansible.builtin.file:
+    path: /home/lostops/prometheus
+    state: directory 
+    mode: '0755' # Set the permissions on the directory
+  become: true  # Run as a superuser
+  become_user: lostops  # Switch to the user "lostops" after becoming a superuser
+
+# This task ensures that the directory /home/lostops/prometheus exists and is owned by the user lostops.
+
+- name: Copy the Prometheus configuration file
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /home/lostops/prometheus/prometheus.yml
+    mode: '0644'
+  become: true  # Run as a superuser
+  become_user: lostops  # Switch to the user "lostops" after becoming a superuser
+# The above task takes the prometheus.yml.j2 Jinja2 template, fills it with the appropriate variables, and copies it to the target directory, setting the lostops user as the owner.
+
+- name: Run Prometheus Docker container
+  ansible.builtin.docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    state: started
+    restart_policy: unless-stopped # container restarts unless explicitly stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - "/home/lostops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "prometheus_data:/prometheus"
+    docker_host: "unix:///run/user/1500/docker.sock" # This is the path to the Docker socket file 
+  become: true # run as a superuser
+  become_user: lostops # Switch to the user "lostops" after becoming a superuser
+# This final task starts a Prometheus container using the image we pulled in the previous task. It binds port 9090 on the host to port 9090 in the container and mounts the configuration file and data directory. It sets the container to restart unless explicitly stopped. The container runs as the lostops user inside the container.
