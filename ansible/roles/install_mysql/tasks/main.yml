@@ -1,0 +1,23 @@
+- name: Create data volume if not exist
+  become: true
+  become_user: lostops
+  docker_volume:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: mysql_data
+
+- name: Run mysql container
+  become: true
+  become_user: lostops
+  docker_container:
+    user: root
+    docker_host: "unix:///run/user/1500/docker.sock"
+    image: "mysql:latest"
+    name: mysql
+    detach: true
+    ports:
+      - "3306:3306" # later on replace this with "127.0.0.1:3306:3306"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+      MYSQL_USER: "{{ mysql_username }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"
+      MYSQL_DATABASE: "lostopsdb"
