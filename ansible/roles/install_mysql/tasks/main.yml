@@ -1,0 +1,62 @@
+# - name: Install mysql packages
+#   apt:
+#     pkg:
+#       - mysql-server
+#       - mysql-client
+#     update_cache: true
+#   become: yes
+
+# - name: Launch mysql service
+#   service:
+#     name: mysql
+#     state: started
+#     enabled: yes
+#   become: yes
+
+# - name: Create mysql db
+#   community.mysql.mysql_db:
+#     name: "lostopsdb"
+#     state: present
+#   become: yes
+
+# - name: Create mysql user
+#   community.mysql.mysql_user:
+#     name: {{ mysql_username }}
+#     password: {{ mysql_password }}
+#     priv: 'lostopsdb.*:ALL'
+#     state: present
+#   become: yes
+
+# - name: Enable remote login
+#   lineinfile:
+#     path: /etc/mysql/mysql.conf.d/mysqld.cnf
+#     regexp: '^bind-address'
+#     line: 'bind-address = 0.0.0.0'
+#     backup: yes
+#   become: yes
+#   notify:
+#     - Restart mysql
+
+- name: Create data volume if not exist
+  become: true
+  become_user: lostops
+  docker_volume:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: mysql_data
+
+- name: Run mysql container
+  become: true
+  become_user: lostops
+  docker_container:
+    user: root
+    docker_host: "unix:///run/user/1500/docker.sock"
+    image: "mysql:latest"
+    name: mysql
+    detach: true
+    ports:
+      - "3306:3306" # later on replace this with "127.0.0.1:3306:3306"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+      MYSQL_USER: "{{ mysql_username }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"
+      MYSQL_DATABASE: "lostopsdb"
