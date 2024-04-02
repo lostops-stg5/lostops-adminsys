@@ -1,6 +1,0 @@
-- name: Reload and restart Prometheus 
-  ansible.builtin.systemd:
-    name: prometheus
-    state: restarted
-    daemon_reload: yes
-# Reloads the systemd manager configuration and restarts the Prometheus service

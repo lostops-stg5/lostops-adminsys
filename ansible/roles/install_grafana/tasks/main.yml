@@ -10,6 +10,7 @@
     source: pull
     docker_host: "unix:///run/user/1500/docker.sock" # This is the path to the Docker socket file
   become: true # run as a superuser
+  become_user: lostops # Switch to the user "lostops" after becoming a superuser
 
 - name: Run Grafana container
   community.general.docker_container: # This module is used to manage Docker containers.
