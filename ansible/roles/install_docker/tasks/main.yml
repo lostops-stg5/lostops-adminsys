@@ -79,13 +79,17 @@
   become: true
   become_user: lostops
 
+- name: Expose privileged ports
+  shell: setcap cap_net_bind_service=ep $(which rootlesskit)
+  become: true
+
 - name: Reset SSH connection
   meta: reset_connection
 
 - name: Launch Docker service
   ansible.builtin.systemd:
     name: docker
-    state: started
+    state: restarted
     enabled: true
     scope: user
   environment:
