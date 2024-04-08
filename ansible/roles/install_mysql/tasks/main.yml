@@ -14,6 +14,7 @@
     image: "mysql:latest"
     name: mysql
     detach: true
+    restart_policy: always
     # Traefik labels
     labels:
       traefik.enable: "true"
