@@ -1,0 +1,34 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+      http:
+        tls:
+          certResolver: production
+          
+api:
+  insecure: true 
+
+providers:
+  docker:
+    useBindPortIP: true
+    endpoint: "/var/run/docker.sock"
+    exposedByDefault: false
+
+certificatesResolvers:
+  letsEncrypt:
+   acme:
+      email: mail@example.com
+      storage: /ssl-certs/acme.json
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      httpChallenge:
+        entryPoint: web
+
+  production:
+    acme:
+      email: mail@example.com
+      storage: /ssl-certs/acme.json
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      httpChallenge:
+        entryPoint: web
