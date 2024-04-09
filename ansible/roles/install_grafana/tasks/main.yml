@@ -15,8 +15,8 @@
       - name: traefik_network
     labels:
       traefik.enable: "true"
-      traefik.http.routers.mysql.entrypoints: "websecure"
-      traefik.http.routers.mysql.rule: "Host(`grafana.lostops.notmuji.com`)"
+      traefik.http.routers.grafana.entrypoints: "websecure"
+      traefik.http.routers.grafana.rule: "Host(`grafana.lostops.notmuji.com`)"
     ports:
       - "3000" # This binds port 3000 on the host to port 3000 in the container.
     volumes: # This volume mounts the Grafana data directory on the host to the container's data directory.
