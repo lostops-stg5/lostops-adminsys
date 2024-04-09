@@ -19,8 +19,14 @@
     command: "{{ mysql_exporter_args }}"
     detach: true
     image: "{{ mysql_exporter_image }}"
+    networks:
+      - name: traefik_network
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.mysql-exporter.entrypoints: "websecure"
+      traefik.http.routers.mysql-exporter.rule: "Host(`app-database.mysql-exporter.lostops.notmuji.com`)"
     ports:
-      - "9104:9104"
+      - "9104"
     state: started
     volumes:
       - "/:/host:ro,rslave"
