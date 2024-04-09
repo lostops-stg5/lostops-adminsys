@@ -60,16 +60,3 @@ data "azurerm_storage_blob" "web_script" {
   storage_account_name   = var.storage_account_name
 }
 
-# -----------------------------------------------------------------
-#                     Security
-# -----------------------------------------------------------------
-
-data "azurerm_key_vault" "key_vault" {
-  name                = var.vault_name
-  resource_group_name = var.ressource_group_name
-}
-
-data "azurerm_key_vault_key" "root_key" {
-  name         = var.key_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}

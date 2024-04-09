@@ -54,16 +54,8 @@ variable "network_name" {
 # -----------------------------------------------------------------
 #                         Security context
 # -----------------------------------------------------------------
-variable "vault_name" {
-  default     = "tnsa800stg2322"
-  description = "The name of the vault used to store keys."
-  type        = string
-  nullable    = false
-}
-
-variable "key_name" {
-  default     = "group-stg-2_rsa"
-  description = "The name of the vault used to store keys."
+variable "SSH_KEY" {
+  description = "The ssh key used by the terraform plan. Must be provided by a secret file."
   type        = string
   nullable    = false
 }

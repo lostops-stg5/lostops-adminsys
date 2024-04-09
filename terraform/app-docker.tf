@@ -10,7 +10,7 @@ resource "azurerm_dev_test_linux_virtual_machine" "app_docker" {
 
   size                   = "Standard_A4_v2"
   username               = "admuser"
-  ssh_key                = data.azurerm_key_vault_key.root_key.public_key_pem
+  ssh_key                = var.SSH_KEY
   lab_virtual_network_id = data.azurerm_dev_test_virtual_network.lostops_network.id
   lab_subnet_name        = data.azurerm_dev_test_virtual_network.lostops_network.name
   storage_type           = "Standard"
@@ -32,11 +32,11 @@ resource "azurerm_dev_test_linux_virtual_machine" "app_docker" {
 }
 
 resource "local_file" "extension_docker_file" {
-  content  = data.azurerm_storage_blob.database_script.name
+  content  = data.azurerm_storage_blob.docker_script.name
   filename = "script_docker"
 }
 
-resource "azurerm_virtual_machine_extension" "app_database_extension" {
+resource "azurerm_virtual_machine_extension" "app_docker_extension" {
   name                 = "app-docker"
   virtual_machine_id   = azurerm_dev_test_linux_virtual_machine.app_database.id
   publisher            = "Microsoft.Azure.Extensions"

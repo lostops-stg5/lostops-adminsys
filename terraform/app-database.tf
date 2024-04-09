@@ -10,7 +10,7 @@ resource "azurerm_dev_test_linux_virtual_machine" "app_database" {
 
   size                   = "Standard_A4_v2"
   username               = "admuser"
-  ssh_key                = data.azurerm_key_vault_key.root_key.public_key_pem
+  ssh_key                = var.SSH_KEY
   lab_virtual_network_id = data.azurerm_dev_test_virtual_network.lostops_network.id
   lab_subnet_name        = data.azurerm_dev_test_virtual_network.lostops_network.name
   storage_type           = "Standard"
