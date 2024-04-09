@@ -24,6 +24,8 @@ entryPoints:
     http:
       tls:
         certResolver: production
+  metrics:
+    address: :5000
 
 providers:
   docker:
@@ -39,3 +41,16 @@ certificatesResolvers:
       caServer: "https://acme-v02.api.letsencrypt.org/directory"
       httpChallenge:
         entryPoint: web
+
+metrics:
+  prometheus:
+    entryPoint: metrics
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    addRoutersLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
+          

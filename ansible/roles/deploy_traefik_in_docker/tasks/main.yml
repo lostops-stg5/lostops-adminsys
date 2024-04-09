@@ -69,6 +69,7 @@
     ports:
       - "80:80"
       - "443:443"
+      - "5000:5000"
     volumes:
       - "/var/run/user/1500/docker.sock:/var/run/docker.sock"
       - "/home/lostops/traefik:/etc/traefik"
