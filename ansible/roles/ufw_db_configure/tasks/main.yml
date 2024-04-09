@@ -1,10 +1,16 @@
-- name: Configure UFW for DB Server
+- name: Configure UFW incoming request for DB Server
   ufw:
     rule: allow
-    port: "{{ db_port }}"
     direction: in
-    proto: tcp
+    port: "{{ db_port }}"
     from_ip: 
       - "{{ monitoring_ip }}"
       - "{{ backend_ip }}"
-    state: enabled
+
+
+- name: Configure UFW outcoming request for DB Server.
+  ufw:
+   rule: allow
+   direction: out
+   port: "{{ db_port }}"
+   state: enabled

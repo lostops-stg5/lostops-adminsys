@@ -3,13 +3,11 @@
 - name: Configure UFW to get requests from 80 port
   ufw:
     rule: allow
-    direction: in
     port: 80
 
 
 - name: Configure UFW to get requests from 443 port
   ufw:
     rule: allow
-    direction: in
     port: 443   
     state: enabled

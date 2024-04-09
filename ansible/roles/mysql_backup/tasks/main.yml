@@ -1,0 +1,31 @@
+---
+# tasks file for mysql_backup
+
+- name: Install mysql-client
+  apt: 
+    name: mysql-client
+    state: latest
+
+- name: Install crontab
+  apt:  
+    name: cron
+    state: latest
+
+- name: Install rsync
+  apt:  
+    name: rsync
+    state: latest
+
+- name: Copy script to Server
+  template:
+   src: /home/broot4rce/Desktop/T-nsa/lostops-adminsys/ansible/roles/mysql_backup/templates/backup_script.sh.j2
+   dest: /home/Desktop/BackupScript/backup_script.sh
+
+- name: Set up a script on a timer.
+  cron:
+        name: "Run my backup script every 3 hours"
+        minute: "0"
+        hour: "*/3"
+        job: "/home/Desktop/BackupScript/backup_script.sh"
+        user: "lostops"
+        state: present
