@@ -8,6 +8,7 @@
     - create_user
     - add_ssh_keys
     - install_docker
+    - deploy_traefik_in_docker
     - node_exporter
     - install_mysql
 
@@ -21,6 +22,7 @@
     - create_user
     - add_ssh_keys
     - install_docker
+    - deploy_traefik_in_docker
     - node_exporter
     - cadvisor_exporter
     - install_prometheus
@@ -36,5 +38,6 @@
     - create_user
     - add_ssh_keys
     - install_docker
+    - deploy_traefik_in_docker
     - node_exporter
     - cadvisor_exporter

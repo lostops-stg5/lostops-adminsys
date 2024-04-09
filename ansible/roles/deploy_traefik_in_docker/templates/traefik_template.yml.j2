@@ -1,33 +1,40 @@
+# (Optional) Log information
+# ---
+log:
+  level: DEBUG  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: json  # common, json, logfmt
+  filePath: /var/log/traefik/traefik.log
+
+# (Optional) Accesslog
+# ---
+accesslog:
+  format: json  # common, json, logfmt
+  filePath: /var/log/traefik/traefik_access.log
+
 entryPoints:
   web:
-    address: ":80"
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
   websecure:
-    address: ":443"
-      http:
-        tls:
-          certResolver: production
-          
-api:
-  insecure: true 
+    address: :443
+    http:
+      tls:
+        certResolver: production
 
 providers:
   docker:
-    useBindPortIP: true
-    endpoint: "/var/run/docker.sock"
+    # useBindPortIP: true
+    endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
 
 certificatesResolvers:
-  letsEncrypt:
-   acme:
-      email: mail@example.com
-      storage: /ssl-certs/acme.json
-      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-      httpChallenge:
-        entryPoint: web
-
   production:
     acme:
-      email: mail@example.com
+      email: mufan.jiang@epitech.eu
       storage: /ssl-certs/acme.json
       caServer: "https://acme-v02.api.letsencrypt.org/directory"
       httpChallenge:
