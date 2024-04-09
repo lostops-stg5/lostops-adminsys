@@ -10,6 +10,13 @@
     command: "{{ node_exporter_args }}"
     detach: true
     image: "{{ node_exporter_image }}"
+    restart_policy: always
+    networks:
+      - name: traefik_network
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.node-exporter.entrypoints: "websecure"
+      traefik.http.routers.node-exporter.rule: "Host(`{{ inventory_hostname }}.node-exporter.lostops.notmuji.com`)"
     ports:
       - "9100:9100"
     state: started

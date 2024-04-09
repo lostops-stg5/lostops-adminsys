@@ -33,12 +33,18 @@
 # Run or restart the Prometheus Docker container only if the configuration file has changed
 - name: Run Prometheus Docker container
   ansible.builtin.docker_container:
-    name: prometheus  # Container name
-    image: prom/prometheus:latest  # Docker image to use
-    state: started  # Ensure the container is running
-    restart_policy: unless-stopped  # Container will restart unless explicitly stopped
+    name: prometheus
+    image: prom/prometheus:latest
+    state: started
+    restart_policy: unless-stopped # container restarts unless explicitly stopped
+    networks:
+      - name: traefik_network
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.prometheus.entrypoints: "websecure"
+      traefik.http.routers.prometheus.rule: "Host(`prometheus.lostops.notmuji.com`)"
     ports:
-      - "9090:9090"  # Bind port 9090 of the host to port 9090 on the container
+      - "9090"
     volumes:
       - "/home/lostops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"  # Mount the configuration file inside the container
       - "prometheus_data:/prometheus"  # Mount the data volume
