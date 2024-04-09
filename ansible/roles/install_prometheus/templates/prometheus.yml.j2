@@ -20,5 +20,5 @@ scrape_configs:
   - job_name: 'mysql-exporter'  # Define a job named 'mysql-exporter'.
     scrape_interval: 5s         # Set the scrape interval for this job to every 5 seconds.
     static_configs:
-      - targets: ['app-database.mysql-exporter.lostops.notmuji.com']
+      - targets: ['']
         # Target for MySQL Exporter: address and port 3306 where MySQL metrics are exposed.
