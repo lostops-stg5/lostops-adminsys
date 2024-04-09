@@ -12,7 +12,7 @@
     image: "{{ node_exporter_image }}"
     ports:
       - "9100:9100"
-    state: present
+    state: started
     volumes:
       - "/:/host:ro,rslave"
       # - "/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro"

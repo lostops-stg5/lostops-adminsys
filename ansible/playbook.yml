@@ -10,6 +10,7 @@
     - install_docker
     - node_exporter
     - install_mysql
+    - mysql_exporter
 
 - name: Configure Docker Server
   hosts: docker
