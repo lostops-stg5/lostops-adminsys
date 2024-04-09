@@ -23,8 +23,14 @@
     image: prom/prometheus:latest
     state: started
     restart_policy: unless-stopped # container restarts unless explicitly stopped
+    networks:
+      - name: traefik_network
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.prometheus.entrypoints: "websecure"
+      traefik.http.routers.prometheus.rule: "Host(`prometheus.lostops.notmuji.com`)"
     ports:
-      - "9090:9090"
+      - "9090"
     volumes:
       - "/home/lostops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
       - "prometheus_data:/prometheus"
