@@ -31,17 +31,17 @@ resource "azurerm_dev_test_linux_virtual_machine" "app_database" {
   }
 }
 
-resource "local_file" "extension_database_file" {
-  content  = data.azurerm_storage_blob.database_script.name
-  filename = "script_database"
-}
+# resource "local_file" "extension_database_file" {
+#   content  = data.azurerm_storage_blob.database_script.name
+#   filename = "script_database"
+# }
 
-resource "azurerm_virtual_machine_extension" "app_database_extension" {
-  name                 = "app-database"
-  virtual_machine_id   = azurerm_dev_test_linux_virtual_machine.app_database.id
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.0"
+# resource "azurerm_virtual_machine_extension" "app_database_extension" {
+#   name                 = "app-database"
+#   virtual_machine_id   = azurerm_dev_test_linux_virtual_machine.app_database.id
+#   publisher            = "Microsoft.Azure.Extensions"
+#   type                 = "CustomScript"
+#   type_handler_version = "2.0"
 
-  settings = base64decode(file(local_file.extension_database_file.content))
-}
+#   settings = base64decode(file("./${local_file.extension_database_file.filename}"))
+# }

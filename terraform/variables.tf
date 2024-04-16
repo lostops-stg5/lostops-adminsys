@@ -58,4 +58,5 @@ variable "SSH_KEY" {
   description = "The ssh key used by the terraform plan. Must be provided by a secret file."
   type        = string
   nullable    = false
+  sensitive   = true
 }

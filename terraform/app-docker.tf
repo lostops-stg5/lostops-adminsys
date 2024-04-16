@@ -31,17 +31,17 @@ resource "azurerm_dev_test_linux_virtual_machine" "app_docker" {
   }
 }
 
-resource "local_file" "extension_docker_file" {
-  content  = data.azurerm_storage_blob.docker_script.name
-  filename = "script_docker"
-}
+# resource "local_file" "extension_docker_file" {
+#   content  = data.azurerm_storage_blob.docker_script.name
+#   filename = "script_docker"
+# }
 
-resource "azurerm_virtual_machine_extension" "app_docker_extension" {
-  name                 = "app-docker"
-  virtual_machine_id   = azurerm_dev_test_linux_virtual_machine.app_database.id
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.0"
+# resource "azurerm_virtual_machine_extension" "app_docker_extension" {
+#   name                 = "app-docker"
+#   virtual_machine_id   = azurerm_dev_test_linux_virtual_machine.app_docker.id
+#   publisher            = "Microsoft.Azure.Extensions"
+#   type                 = "CustomScript"
+#   type_handler_version = "2.0"
 
-  settings = base64decode(file(local_file.extension_docker_file.content))
-}
+#   settings = base64decode(file("./${local_file.extension_docker_file.filename}"))
+# }
