@@ -8,5 +8,4 @@
 - name: Configure UFW for Backend Server
   ufw:
     rule: allow
-    direction: in
     port: '22'
