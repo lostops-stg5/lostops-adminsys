@@ -1,0 +1,55 @@
+- name: Create a directory for Prometheus configuration and data
+  ansible.builtin.file:
+    path: /home/lostops/prometheus
+    state: directory 
+    mode: '0755' # Set the permissions on the directory
+  become: true  # Run as a superuser
+  become_user: lostops  # Switch to the user "lostops" after becoming a superuser
+
+# This task ensures that the directory /home/lostops/prometheus exists and is owned by the user lostops.
+
+# Gather current state of the Prometheus configuration file before any changes
+- name: Capture the current state of prometheus.yml
+  ansible.builtin.stat:
+    path: /home/lostops/prometheus/prometheus.yml
+  register: before_copy  # Save the file state to the variable 'before_copy'
+
+# Copy the updated Prometheus configuration template to the target directory
+- name: Copy the Prometheus configuration file
+  ansible.builtin.template:
+    src: prometheus.yml.j2  # Source template file
+    dest: /home/lostops/prometheus/prometheus.yml  # Destination path on the remote host
+    mode: '0644'  # Set file permissions
+  become: true  # Execute the task with superuser privileges
+  become_user: lostops  # Switch to user 'lostops' after becoming superuser
+  register: template_copy  # Save the task output to the variable 'template_copy' to check changes
+
+# Set a fact to indicate if the configuration file has been changed
+- name: Determine if prometheus.yml changed
+  set_fact:
+    config_changed: "{{ before_copy.stat.checksum != template_copy.checksum }}"  # Compare checksums of the file before and after copying
+  when: template_copy.changed  # This condition runs only if the template copy task reported changes
+
+# Run or restart the Prometheus Docker container only if the configuration file has changed
+- name: Run Prometheus Docker container
+  ansible.builtin.docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    state: started
+    restart_policy: unless-stopped # container restarts unless explicitly stopped
+    networks:
+      - name: traefik_network
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.prometheus.entrypoints: "websecure"
+      traefik.http.routers.prometheus.rule: "Host(`prometheus.lostops.notmuji.com`)"
+    ports:
+      - "9090"
+    volumes:
+      - "/home/lostops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"  # Mount the configuration file inside the container
+      - "prometheus_data:/prometheus"  # Mount the data volume
+    docker_host: "unix:///run/user/1500/docker.sock"  # Specify the Docker daemon socket to use
+    recreate: true  # Force recreation of the container if it already exists
+  become: true  # Execute the task with superuser privileges
+  become_user: lostops  # Switch to user 'lostops' after becoming superuser
+  when: config_changed|default(false)  # Only run this task if the configuration file was actually changed

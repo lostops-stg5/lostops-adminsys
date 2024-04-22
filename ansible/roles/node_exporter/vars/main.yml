@@ -1,0 +1,12 @@
+node_exporter_args:
+  - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"'
+  - '--collector.diskstats.ignored-devices=^(ram|loop|fd)d+$'
+  - '--web.listen-address=0.0.0.0:9100'
+  - '--log.level=info'
+  - '--collector.processes'
+  - '--path.rootfs=/host'
+  # - '--collector.systemd'
+node_exporter_image: quay.io/prometheus/node-exporter:v0.18.1
+node_exporter_restart: "on-failure"
+node_exporter_restart_sec: "15"
+node_exporter_service_name: "node-exporter"

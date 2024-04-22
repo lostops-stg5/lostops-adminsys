@@ -1,0 +1,6 @@
+---
+# tasks file for ufw_monitoring_configure
+
+- name: Enable UFW
+  ufw:
+    state: enabled
