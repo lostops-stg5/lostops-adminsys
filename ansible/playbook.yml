@@ -13,6 +13,8 @@
     - node_exporter
     - cadvisor_exporter
     - mysql_exporter
+    - ufw_install
+    - ufw_db_configure
 
 - name: Configure Docker Server
   hosts: docker
@@ -43,3 +45,5 @@
     - deploy_traefik_in_docker
     - node_exporter
     - cadvisor_exporter
+    - ufw_install
+    - ufw_backend_configure
