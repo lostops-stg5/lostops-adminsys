@@ -1,7 +1,24 @@
 global:
-  scrape_interval: 30s # Set the scrape interval to every 15 seconds. This defines how often Prometheus collects metrics.
+  scrape_interval: 15s  # Set the global scrape interval to every 15 seconds. This affects all scrape jobs unless overridden.
 
 scrape_configs:
-  - job_name: 'prometheus' # Define a job named "prometheus".
+  # Configuration block for cAdvisor
+  - job_name: 'cadvisor'  # Define a job named 'cadvisor'.
+    scrape_interval: 5s   # Set the scrape interval for this job to every 5 seconds, overriding the global setting.
     static_configs:
-      - targets: ['localhost:9090'] # Targets for this job. Prometheus will scrape metrics from itself on port 9090.
+      - targets: ['app-docker.cadvisor-exporter.lostops.notmuji.com', 'app-database.cadvisor-exporter.lostops.notmuji.com', 'app-web.cadvisor-exporter.lostops.notmuji.com']
+        # List of targets for cAdvisor: these are the addresses where Prometheus will fetch metrics for this job, including the port 8080.
+
+  # Configuration block for Node Exporter
+  - job_name: 'node-exporter'  # Define a job named 'node-exporter'.
+    scrape_interval: 5s        # Set the scrape interval for this job to every 5 seconds, same as for cAdvisor.
+    static_configs:
+      - targets: ['app-docker.node-exporter.lostops.notmuji.com', 'app-database.node-exporter.lostops.notmuji.com', 'app-web.node-exporter.lostops.notmuji.com']
+        # List of targets for Node Exporter: addresses and port 9100 where Node Exporter metrics are available.
+
+  # Configuration block for MySQL Exporter
+  - job_name: 'mysql-exporter'  # Define a job named 'mysql-exporter'.
+    scrape_interval: 5s         # Set the scrape interval for this job to every 5 seconds.
+    static_configs:
+      - targets: ['app-database.mysql-exporter.lostops.notmuji.com']
+        # Target for MySQL Exporter: address and port 3306 where MySQL metrics are exposed.
