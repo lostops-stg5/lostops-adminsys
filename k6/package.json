@@ -1,0 +1,9 @@
+{
+  "name": "k6",
+  "version": "1.0.0",
+  "description": "Use to simply template and use js type for test configurations.",
+  "license": "MIT",
+  "dependencies": {
+    "k6": "^0.0.0"
+  }
+}
