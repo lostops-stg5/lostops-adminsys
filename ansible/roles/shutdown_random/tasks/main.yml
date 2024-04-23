@@ -1,0 +1,23 @@
+- name: Get running containers
+  community.docker.docker_host_info:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    containers: yes
+  register: docker_info
+
+- name: Chose a random container
+  set_fact:
+    choosen_container: "{{ docker_info.containers | map(attribute='Id') | random }}"
+
+- name: Stop running containers
+  community.docker.docker_container:
+    name: "{{choosen_container}}"
+    state: stopped
+
+- name: Waiting 30 seconds
+  ansible.builtin.pause:
+    seconds: 30
+
+- name: Stop running containers
+  community.docker.docker_container:
+    name: "{{choosen_container}}"
+    state: started
