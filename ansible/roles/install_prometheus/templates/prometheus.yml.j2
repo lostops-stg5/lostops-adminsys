@@ -27,5 +27,5 @@ scrape_configs:
   - job_name: 'traefik-exporter'  # Define a job named 'traefik-exporter'.
     scrape_interval: 5s           # Set the scrape interval for this job to every 5 seconds.
     static_configs:
-      - targets: ['app-docker025984.westeurope.cloudapp.azure.com:5000']
+      - targets: ['app-docker025984.westeurope.cloudapp.azure.com:5000', 'app-web812909.westeurope.cloudapp.azure.com:5000', 'app-docker025984.westeurope.cloudapp.azure.com:5000']
         # Target for Traefik Exporter: address and port 8080 where Traefik metrics are available.
