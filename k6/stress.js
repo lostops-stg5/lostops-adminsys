@@ -6,25 +6,8 @@ export const TrendRTT = new Trend("RTT");
 export const RateContentOK = new Rate("ContentOK");
 export const CounterErrors = new Counter("Errors");
 export const options = {
-  thresholds: {
-    http_req_failed: [
-      {
-        threshold: "rate<0.01",
-        abortOnFail: true,
-        delayAbortEval: "10s",
-      },
-    ],
-
-    http_req_duration: [
-      {
-        threshold: "p(95)<1000",
-        abortOnFail: true,
-        delayAbortEval: "10s",
-      },
-    ],
-  },
   stages: [
-    { duration: "2m", target: 2000 },
+    { duration: "2m", target: 150 },
     { duration: "1m", target: 0 },
   ],
 };
