@@ -34,6 +34,13 @@
     state: enabled
   become: true
 
+- name: Configure UFW to allow port 5000
+  ufw:
+    rule: allow
+    port: '5000'
+    state: enabled
+  become: true
+
 - name: Allow all access from RFC1918 networks to this host
   ufw:
     rule: allow
