@@ -6,18 +6,24 @@
 
 - name: Chose a random container
   set_fact:
-    choosen_container: "{{ docker_info.containers | map(attribute='Id') | random }}"
+    choosen_container: "{{  docker_info.containers | length | random }}"
 
-- name: Stop running containers
+- name: Show instance
+  debug:
+    msg: "Image shutdown : {{ docker_info.containers[choosen_container | int].Image }}"
+
+- name: Stop running container
   community.docker.docker_container:
-    name: "{{choosen_container}}"
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ docker_info.containers[choosen_container | int].Id }}"
     state: stopped
 
-- name: Waiting 30 seconds
+- name: Waiting 1 minute
   ansible.builtin.pause:
-    seconds: 30
+    minutes: 1
 
-- name: Stop running containers
+- name: Restart stopped container
   community.docker.docker_container:
-    name: "{{choosen_container}}"
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ docker_info.containers[choosen_container | int].Id }}"
     state: started
