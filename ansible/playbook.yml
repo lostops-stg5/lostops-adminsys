@@ -15,6 +15,7 @@
     - mysql_exporter
     - ufw_install
     - ufw_db_configure
+    - mysql_backup
 
 - name: Configure Docker Server
   hosts: docker
