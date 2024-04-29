@@ -1,0 +1,24 @@
+- name: Get running containers
+  community.docker.docker_container_info:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ app_name }}"
+  register: container
+
+- name: Stop running container
+  community.docker.docker_container:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ app_name }}"
+    state: stopped
+  when: container.exists
+
+- name: Waiting 1 minute
+  ansible.builtin.pause:
+    minutes: 1
+  when: container.exists
+
+- name: Restart stopped container
+  community.docker.docker_container:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ app_name }}"
+    state: started
+  when: container.exists

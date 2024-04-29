@@ -1,0 +1,21 @@
+---
+- name: Making chaos on database
+  hosts: database
+  tags: database
+  remote_user: lostops
+  roles:
+    - shutdown_random
+
+- name: Making chaos on web app
+  hosts: web
+  tags: web
+  remote_user: lostops
+  roles:
+    - shutdown_random
+
+- name: Making chaos on docker virtual machine
+  hosts: docker
+  tags: docker
+  remote_user: lostops
+  roles:
+    - shutdown_random
