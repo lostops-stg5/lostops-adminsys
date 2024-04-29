@@ -1,0 +1,41 @@
+---
+# tasks file for mysql_backup
+
+- name: Install crontab
+  apt:  
+    name: cron
+    state: latest
+  become: true
+
+- name: Install rsync
+  apt:  
+    name: rsync
+    state: latest
+  become: true
+
+- name: Create backup directory
+  file:
+    path: "/home/lostops/mysql_backup"
+    state: directory
+    owner: lostops
+    group: lostops
+  become: true
+  become_user: lostops
+
+- name: Copy script to Server
+  template:
+   src: ./roles/mysql_backup/templates/backup_script.sh.j2
+   dest: /home/lostops/mysql_backup/backup_script.sh
+   mode: "0755"
+  become: true
+  become_user: lostops
+
+- name: Set up a script on a timer.
+  cron:
+        name: "Run my backup sexcript every 3 hours"
+        minute: "0"
+        hour: "*/3"
+        job: "/home/lostops/mysql_backup/backup_script.sh"
+        user: "lostops"
+        state: present
+  become: true
