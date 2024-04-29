@@ -7,7 +7,7 @@ mysql_exporter_args:
   - "--collect.perf_schema.eventsstatements"
   - "--collect.slave_status"
   - "--mysqld.username={{ mysql_exporter_user }}:{{ mysql_exporter_password }}"
-  - "--mysqld.address=mysql:3306"
+  - "--mysqld.address=db.lostops.notmuji.com:3306"
 
 mysql_exporter_image: prom/mysqld-exporter
 mysql_exporter_restart: "on-failure"
