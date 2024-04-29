@@ -8,8 +8,13 @@
     - create_user
     - add_ssh_keys
     - install_docker
-    - node_exporter
+    - deploy_traefik_in_docker
     - install_mysql
+    - node_exporter
+    - cadvisor_exporter
+    - mysql_exporter
+    - ufw_install
+    - ufw_db_configure
 
 - name: Configure Docker Server
   hosts: docker
@@ -21,6 +26,7 @@
     - create_user
     - add_ssh_keys
     - install_docker
+    - deploy_traefik_in_docker
     - node_exporter
     - cadvisor_exporter
     - install_prometheus
@@ -36,5 +42,8 @@
     - create_user
     - add_ssh_keys
     - install_docker
+    - deploy_traefik_in_docker
     - node_exporter
     - cadvisor_exporter
+    - ufw_install
+    - ufw_backend_configure

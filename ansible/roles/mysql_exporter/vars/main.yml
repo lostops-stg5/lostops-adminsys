@@ -1,0 +1,15 @@
+mysql_exporter_args:
+  - "--collect.auto_increment.columns"
+  - "--collect.global_status"
+  - "--collect.global_variables"
+  - "--collect.info_schema.processlist"
+  - "--collect.info_schema.query_response_time"
+  - "--collect.perf_schema.eventsstatements"
+  - "--collect.slave_status"
+  - "--mysqld.username={{ mysql_exporter_user }}:{{ mysql_exporter_password }}"
+  - "--mysqld.address=db.lostops.notmuji.com:3306"
+
+mysql_exporter_image: prom/mysqld-exporter
+mysql_exporter_restart: "on-failure"
+mysql_exporter_restart_sec: "15"
+mysql_exporter_service_name: "mysql-exporter"

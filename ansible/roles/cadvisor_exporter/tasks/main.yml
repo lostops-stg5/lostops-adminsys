@@ -6,8 +6,14 @@
     docker_host: "unix:///run/user/1500/docker.sock"
     name: "{{ cadvisor_exporter_service_name }}"
     image: "{{ cadvisor_exporter_image }}"
+    networks:
+      - name: traefik_network
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.cadvisor-exporter.entrypoints: "websecure"
+      traefik.http.routers.cadvisor-exporter.rule: "Host(`{{ inventory_hostname }}.cadvisor-exporter.lostops.notmuji.com`)"
     ports:
-      - "8080:8080"
+      - "8080"
     state: started
     restart_policy: always
     volumes:

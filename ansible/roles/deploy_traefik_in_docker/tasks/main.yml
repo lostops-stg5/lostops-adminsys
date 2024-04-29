@@ -2,43 +2,79 @@
   apt:
     name: python3-requests
     state: present
+  become: true
 
 - name: Install python3-docker package
   apt:
     name: python3-docker
     state: present
+  become: true
 
-- name: Pull Traefik Docker image
-  docker_image:
-    name: traefik
-    state: present
+# - name: Pull Traefik Docker image
+#   docker_image:
+#     name: traefik
+#     state: present
 
 - name: Create /etc/traefik directory if it doesn't exist
   file:
-    path: "/etc/traefik"
+    path: "/home/lostops/traefik"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    # owner: "{{ ansible_env.USER }}"
+    # group: "{{ ansible_env.USER }}"
+    owner: lostops
+    group: lostops
+  become: true
+  become_user: lostops
+
+- name: Create certs directory if it doesn't exist
+  file:
+    path: "/home/lostops/certs"
+    state: directory
+    owner: lostops
+    group: lostops
+  become: true
+  become_user: lostops
+
+- name: Create acme.json if it doesn't exist
+  file:
+    path: "/home/lostops/certs/acme.json"
+    state: file
+    mode: "0600"
+  become: true
+  become_user: lostops
 
 - name: Insert file
   template:
-    src: /home/broot4rce/Desktop/T-NSA-800/roles/deploy_traefik_in_docker/templates/traefik_template.yml.j2
-    dest: /etc/traefik/traefik.yml
+    src: ./roles/deploy_traefik_in_docker/templates/traefik_template.yml.j2
+    dest: /home/lostops/traefik/traefik.yml
+  become: true
+  become_user: lostops
 
 - name: Create Docker network for Traefik if it doesn't exist
   docker_network:
     name: traefik_network
+    docker_host: "unix:///run/user/1500/docker.sock"
+  become: true
+  become_user: lostops
 
 - name: Run Traefik container
   docker_container:
     name: traefik
-    image: traefik
+    image: traefik:latest
+    docker_host: "unix:///run/user/1500/docker.sock"
+    detach: true
+    restart_policy: always
     state: started
+    restart: true
     ports:
       - "80:80"
       - "443:443"
+      - "5000:5000"
     volumes:
-      - "unix:////run/user/1500/docker.sock:/var/run/docker.sock"
-      - "/etc/traefik:/etc/traefik"
+      - "/var/run/user/1500/docker.sock:/var/run/docker.sock"
+      - "/home/lostops/traefik:/etc/traefik"
+      - "/home/lostops/certs/acme.json:/ssl-certs/acme.json:rw"
     networks:
       - name: traefik_network
+  become: true
+  become_user: lostops

@@ -1,0 +1,29 @@
+- name: Get running containers
+  community.docker.docker_host_info:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    containers: yes
+  register: docker_info
+
+- name: Chose a random container
+  set_fact:
+    choosen_container: "{{  docker_info.containers | length | random }}"
+
+- name: Show instance
+  debug:
+    msg: "Image shutdown : {{ docker_info.containers[choosen_container | int].Image }}"
+
+- name: Stop running container
+  community.docker.docker_container:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ docker_info.containers[choosen_container | int].Id }}"
+    state: stopped
+
+- name: Waiting 1 minute
+  ansible.builtin.pause:
+    minutes: 1
+
+- name: Restart stopped container
+  community.docker.docker_container:
+    docker_host: "unix:///run/user/1500/docker.sock"
+    name: "{{ docker_info.containers[choosen_container | int].Id }}"
+    state: started

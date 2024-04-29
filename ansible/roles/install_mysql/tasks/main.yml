@@ -15,13 +15,8 @@
     name: mysql
     detach: true
     restart_policy: always
-    # Traefik labels
-    labels:
-      traefik.enable: "true"
-      traefik.http.routers.mysql.entrypoints: "https"
-      traefik.http.routers.mysql.rule: "Host(`db.lostops.notmuji.com`)"
     ports:
-      - "3306:3306" # later on replace this with "127.0.0.1:3306:3306"
+      - "3306:3306"
     env:
       MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
       MYSQL_USER: "{{ mysql_username }}"

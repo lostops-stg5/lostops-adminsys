@@ -1,0 +1,7 @@
+---
+- name: Simulate crash on web app
+  hosts: web
+  tags: web
+  remote_user: lostops
+  roles:
+    - shutdown_web

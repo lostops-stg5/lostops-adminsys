@@ -11,14 +11,18 @@
     user : root
     state: started # this ensures that the container is started.
     restart_policy: always # this ensures that the container restarts automatically if it stops.
+    networks:
+      - name: traefik_network
     labels:
       traefik.enable: "true"
-      traefik.http.routers.mysql.entrypoints: "https"
-      traefik.http.routers.mysql.rule: "Host(`grafana.lostops.notmuji.com`)"
+      traefik.http.routers.grafana.entrypoints: "websecure"
+      traefik.http.routers.grafana.rule: "Host(`grafana.lostops.notmuji.com`)"
     ports:
-      - "3000:3000" # This binds port 3000 on the host to port 3000 in the container.
+      - "3000" # This binds port 3000 on the host to port 3000 in the container.
     volumes: # This volume mounts the Grafana data directory on the host to the container's data directory.
       - "/home/lostops/grafana/data:/var/lib/grafana" 
+    env : 
+      GF_SERVER_ROOT_URL: "https://grafana.lostops.notmuji.com"
     docker_host: "unix:///run/user/1500/docker.sock"  # This is the path to the Docker socket file
   become: true # run as a superuser
   become_user: lostops # Switch to the user "lostops" after becoming a superuser

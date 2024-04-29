@@ -1,0 +1,9 @@
+- name: Restart mysql-exporter
+  become: true
+  become_user: lostops
+  systemd:
+    name: "{{ mysql_exporter_service_name }}.service"
+    daemon_reload: yes
+    state: restarted
+    scope: user
+  listen: restart mysql-exporter
