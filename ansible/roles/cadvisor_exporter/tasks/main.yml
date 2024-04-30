@@ -13,7 +13,7 @@
       traefik.http.routers.cadvisor-exporter.entrypoints: "websecure"
       traefik.http.routers.cadvisor-exporter.rule: "Host(`{{ inventory_hostname }}.cadvisor-exporter.lostops.notmuji.com`)"
     ports:
-      - "8080:8080"
+      - "8080"
     state: started
     restart_policy: always
     volumes:

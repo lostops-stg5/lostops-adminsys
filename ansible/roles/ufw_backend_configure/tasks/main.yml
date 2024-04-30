@@ -3,13 +3,27 @@
 - name: Configure UFW to get requests from 80 port
   ufw:
     rule: allow
-    direction: in
     port: 80
-
+    state: enabled
+  become: true
 
 - name: Configure UFW to get requests from 443 port
   ufw:
     rule: allow
-    direction: in
-    port: 443   
+    port: 443
     state: enabled
+  become: true
+
+- name: Configure UFW to drop everything else
+  ufw:
+    rule: deny
+    direction: in
+    state: enabled
+  become: true
+
+- name: Configure UFW to allow all outgoing connection
+  ufw:
+    rule: allow
+    direction: out
+    state: enabled
+  become: true

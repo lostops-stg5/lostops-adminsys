@@ -1,0 +1,5 @@
+#!/bin/bash
+
+docker exec mysql mysqldump -h 127.0.0.1 -u root -p{{ mysql_root_password }} lostopsdb > ~/backup.sql
+
+rsync -avz /home/lostops/mysql_backup/backup.sql lostops@app-docker:/home/lostops/mysql_backup/

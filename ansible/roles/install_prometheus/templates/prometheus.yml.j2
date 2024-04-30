@@ -22,3 +22,10 @@ scrape_configs:
     static_configs:
       - targets: ['app-database.mysql-exporter.lostops.notmuji.com']
         # Target for MySQL Exporter: address and port 3306 where MySQL metrics are exposed.
+
+  # Configuration block for Traefik Exporter
+  - job_name: 'traefik-exporter'  # Define a job named 'traefik-exporter'.
+    scrape_interval: 5s           # Set the scrape interval for this job to every 5 seconds.
+    static_configs:
+      - targets: ['app-docker025984.westeurope.cloudapp.azure.com:5000', 'app-web812909.westeurope.cloudapp.azure.com:5000', 'app-database042343.westeurope.cloudapp.azure.com:5000']
+        # Target for Traefik Exporter: address and port 8080 where Traefik metrics are available.
